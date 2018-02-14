@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0524294e-8636-43a1-bc57-aec348dab3e7" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AccessProxy.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/exceptions/InvalidPathException.php" />
-    </list>
+    <list default="true" id="0524294e-8636-43a1-bc57-aec348dab3e7" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,8 +14,8 @@
       <file leaf-file-name="AccessProxy.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/AccessProxy.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="93" column="39" lean-forward="true" selection-start-line="93" selection-start-column="39" selection-end-line="93" selection-end-column="39" />
+            <state relative-caret-position="267">
+              <caret line="98" column="42" lean-forward="true" selection-start-line="98" selection-start-column="42" selection-end-line="98" selection-end-column="42" />
               <folding>
                 <element signature="e#6#93#0#PHP" expanded="true" />
                 <element signature="n#__destruct#0;n#AccessProxy#0;n#!!top" expanded="true" />
@@ -234,12 +231,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1518606696084</updated>
-      <workItem from="1518606698931" duration="2429000" />
+      <workItem from="1518606698931" duration="2501000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2429000" />
+    <option name="totallyTimeSpent" value="2501000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1680" height="1028" extended-state="6" />
@@ -297,8 +294,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AccessProxy.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="93" column="39" lean-forward="true" selection-start-line="93" selection-start-column="39" selection-end-line="93" selection-end-column="39" />
+        <state relative-caret-position="267">
+          <caret line="98" column="42" lean-forward="true" selection-start-line="98" selection-start-column="42" selection-end-line="98" selection-end-column="42" />
           <folding>
             <element signature="e#6#93#0#PHP" expanded="true" />
             <element signature="n#__destruct#0;n#AccessProxy#0;n#!!top" expanded="true" />
