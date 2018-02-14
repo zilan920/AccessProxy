@@ -37,8 +37,6 @@ class AccessProxy
         self::CONSTRUCT_CALL,
     ];
 
-
-
     public function __destruct()
     {
         $this->applyHook(self::DESTRUCT_CALL);
@@ -115,6 +113,9 @@ class AccessProxy
 
     private function initInstance()
     {
+        if (empty($this->className)) {
+            return null;
+        }
         if (!empty($this->classPath)) {
             try {
                 if (!include_once($this->classPath)) {
