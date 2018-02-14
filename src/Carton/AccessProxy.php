@@ -5,7 +5,9 @@
  * Date: 14/02/2018
  * Time: 7:11 PM
  */
-use accessproxy\exceptions\InvalidPathException;
+namespace Carton;
+
+use Carton\exceptions\InvalidPathException;
 
 class AccessProxy
 {

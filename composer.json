@@ -1,0 +1,16 @@
+{
+    "name": "zilan/access-proxy",
+    "description": "class access proxy",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "zilan",
+            "email": "zilan920@126.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "Carton": "src/" }
+    },
+    "require": {}
+}
