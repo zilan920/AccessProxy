@@ -18,6 +18,8 @@ class AccessProxy
     private $classPath = '';
 
     protected $hooks;
+    protected $commonHooks;
+    protected $specifiedHooks;
 
     CONST BEFORE_CALL = 'call.before';
     CONST AFTER_CALL  = 'call.after';
@@ -60,27 +62,32 @@ class AccessProxy
 
     public function __call($name, $arguments)
     {
-        $this->applyHook(self::BEFORE_CALL);
+        $this->applyHook(self::BEFORE_CALL, $name);
         $instance = $this->getInstance();
         $r = call_user_func_array(
             array($instance, $name),
             $arguments
         );
-        $this->applyHook(self::AFTER_CALL);
+        $this->applyHook(self::AFTER_CALL, $name);
         return $r;
     }
 
-    public function hook($name, $hook)
+    public function hook($name, $hook, $condition = '')
     {
         if (in_array($name, self::AVAILABLE_HOOKS)) {
-            $this->hooks[$name] = $hook;
+            if (!empty($condition)) {
+                $this->specifiedHooks[$name] = $hook;
+            } else {
+                $this->commonHooks[$name] = $hook;
+            }
         }
     }
 
-    protected function applyHook($name)
+    protected function applyHook($name, $condition = '')
     {
-        if (isset($this->hooks[$name])) {
-            $hook = $this->hooks[$name];
+        $hooks = empty($condition) ? $this->commonHooks : $this->specifiedHooks;
+        if (isset($hooks[$name])) {
+            $hook = $hooks[$name];
             $instance = $this->getInstance();
             if (is_callable($hook) || function_exists($hook)) {
                 call_user_func($hook);
@@ -128,6 +135,18 @@ class AccessProxy
         } elseif (in_array($name, self::ILLEGAL_PROPERTIES)) {
             //todo add log
             return null;
+        } else {
+            return $this->getInstance()->$name;
         }
+    }
+
+    public function __isset($name)
+    {
+        return isset($this->getInstance()->$name);
+    }
+
+    public function __unset($name)
+    {
+        unset($this->getInstance()->$name);
     }
 }
