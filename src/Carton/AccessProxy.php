@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: fangzihan
- * Date: 14/02/2018
- * Time: 7:11 PM
- */
 namespace Carton;
 
 use Carton\exceptions\InvalidPathException;
