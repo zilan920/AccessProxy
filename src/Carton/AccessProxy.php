@@ -5,26 +5,25 @@ use Carton\exceptions\InvalidPathException;
 
 class AccessProxy
 {
-    private $instance;
+    private $_instance;
 
-    private $className;
+    private $_className;
 
-    private $classArgs = [];
+    private $_classArgs = [];
 
-    private $classPath = '';
+    private $_classPath = '';
 
-    protected $hooks;
-    protected $commonHooks;
-    protected $specifiedHooks;
+    protected $_commonHooks;
+    protected $_specifiedHooks;
 
     CONST BEFORE_CALL = 'call.before';
     CONST AFTER_CALL  = 'call.after';
     CONST DESTRUCT_CALL = 'call.destruct';
     CONST CONSTRUCT_CALL = 'call.destruct';
 
-    CONST ACCESSIBLE_PROPERTIES = ['className', 'classPath'];
+    CONST ACCESSIBLE_PROPERTIES = ['_className', '_classPath'];
 
-    CONST ILLEGAL_PROPERTIES = ['instance'];
+    CONST ILLEGAL_PROPERTIES = ['_instance'];
 
     CONST AVAILABLE_HOOKS = [
         self::BEFORE_CALL,
@@ -35,94 +34,94 @@ class AccessProxy
 
     public function __destruct()
     {
-        $this->applyHook(self::DESTRUCT_CALL);
+        $this->_applyHook(self::DESTRUCT_CALL);
     }
 
     public function __construct($className, $classArgs, $classPath = '')
     {
-        $this->setClassName($className);
-        $this->setClassArgs($classArgs);
-        !empty($classPath) && $this->setclassPath($classPath);
-        $this->applyHook(self::CONSTRUCT_CALL);
+        $this->_setClassName($className);
+        $this->_setClassArgs($classArgs);
+        !empty($classPath) && $this->_setclassPath($classPath);
+        $this->_applyHook(self::CONSTRUCT_CALL);
     }
 
-    public function getInstance()
+    public function _getInstance()
     {
-        if(null === $this->instance) {
-            $this->instance = $this->initInstance();
+        if(null === $this->_instance) {
+            $this->_instance = $this->_initInstance();
         }
-        return $this->instance;
+        return $this->_instance;
     }
 
     public function __call($name, $arguments)
     {
-        $this->applyHook(self::BEFORE_CALL, $name);
-        $instance = $this->getInstance();
+        $this->_applyHook(self::BEFORE_CALL, $name);
+        $instance = $this->_getInstance();
         $r = call_user_func_array(
             array($instance, $name),
             $arguments
         );
-        $this->applyHook(self::AFTER_CALL, $name);
+        $this->_applyHook(self::AFTER_CALL, $name);
         return $r;
     }
 
-    public function hook($name, $hook, $condition = '')
+    public function _hook($name, $hook, $condition = '')
     {
         if (in_array($name, self::AVAILABLE_HOOKS)) {
             if (!empty($condition)) {
-                $this->specifiedHooks[$name] = $hook;
+                $this->_specifiedHooks[$name] = $hook;
             } else {
-                $this->commonHooks[$name] = $hook;
+                $this->_commonHooks[$name] = $hook;
             }
         }
     }
 
-    protected function applyHook($name, $condition = '')
+    protected function _applyHook($name, $condition = '')
     {
-        $hooks = empty($condition) ? $this->commonHooks : $this->specifiedHooks;
+        $hooks = empty($condition) ? $this->_commonHooks : $this->_specifiedHooks;
         if (isset($hooks[$name])) {
             $hook = $hooks[$name];
-            $instance = $this->getInstance();
+            $instance = $this->_getInstance();
             if (is_callable($hook) || function_exists($hook)) {
-                call_user_func($hook);
+                return call_user_func($hook);
                 //成员函数可使用method_exists检测，静态函数可使用property_exists检测
             } else if (method_exists($instance, $hook) || property_exists($instance, $hook)) {
-                call_user_func([$instance, $hook]);
+                return call_user_func([$instance, $hook]);
             }
         }
     }
 
-    protected function setClassName($className)
+    protected function _setClassName($className)
     {
-        !is_null($className) && ($this->className = $className);
+        !is_null($className) && ($this->_className = $className);
     }
 
-    protected function setClassPath($classPath)
+    protected function _setClassPath($classPath)
     {
-        !is_null($classPath) && ($this->classPath = $classPath);
+        !is_null($classPath) && ($this->_classPath = $classPath);
     }
 
-    protected function setClassArgs($classArgs)
+    protected function _setClassArgs($classArgs)
     {
-        !is_null($classArgs) && ($this->classArgs = $classArgs);
+        !is_null($classArgs) && ($this->_classArgs = $classArgs);
     }
 
-    private function initInstance()
+    private function _initInstance()
     {
-        if (empty($this->className)) {
+        if (empty($this->_className)) {
             return null;
         }
-        if (!empty($this->classPath)) {
+        if (!empty($this->_classPath)) {
             try {
-                if (!include_once($this->classPath)) {
-                    throw new InvalidPathException($this->classPath . 'Not Exists');
+                if (!include_once($this->_classPath)) {
+                    throw new InvalidPathException($this->_classPath . 'Not Exists');
                 }
-            } catch (Exception $e) {
+            } catch (InvalidPathException $e) {
                 //todo add log
             }
         }
-        $class_name = $this->className;
-        return new $class_name($this->classArgs);
+        $class_name = $this->_className;
+        return new $class_name($this->_classArgs);
     }
 
     public function __get($name)
@@ -133,17 +132,17 @@ class AccessProxy
             //todo add log
             return null;
         } else {
-            return $this->getInstance()->$name;
+            return $this->_getInstance()->$name;
         }
     }
 
     public function __isset($name)
     {
-        return isset($this->getInstance()->$name);
+        return isset($this->_getInstance()->$name);
     }
 
     public function __unset($name)
     {
-        unset($this->getInstance()->$name);
+        unset($this->_getInstance()->$name);
     }
 }
